@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <title>Чат-бот</title>
+</head>
+<body>
+    <div class="background">
+        <div class="header">
+            <h1 class="header_text">Работает LLM gemma3:4b</h1>
+        </div>
+        <div class="main">
+            <div class="question">
+                <p>Ваш вопрос:</p>
+                <textarea id="question"></textarea>
+            </div>
+            <div class="button-container">
+                <button id="ask_button">Спросить</button>
+            </div>
+            <div class="answer">
+                <p>Ваш ответ:</p>
+                <textarea id="answer"></textarea>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{{url_for('static', filename='scripts.js')}}"></script>
+</body>
+</html>
