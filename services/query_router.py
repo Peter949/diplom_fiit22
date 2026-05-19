@@ -1,8 +1,8 @@
 from sklearn.metrics.pairwise import cosine_similarity
-from services.rag_service import rag_service
 
 class QueryRouter:
-    def __init__(self):
+    def __init__(self, embedding_function):
+        self.embedding_function = embedding_function
         self.examples = {
             "faq": [
                 "Сколько багажа можно провозить?",
@@ -14,8 +14,10 @@ class QueryRouter:
             "flights": [
                 "Когда вылетает рейс SU123?",
                 "Есть ли рейс из Франкфурта в Париж?",
-                "Во сколько прилетает самолет?",
-                "Какое расписание рейсов?"
+                "Хочу лететь из Санкт-Петербурга в Дубай",
+                "Нужен рейс из Москвы в Якутск",
+                "Подберите перелет в Токио",
+                "Расписание рейсов Москва Якутск"
             ],
 
             "combined": [
@@ -28,7 +30,7 @@ class QueryRouter:
         for route, questions in self.examples.items():
             self.example_embeddings[route] = []
             for question in questions:
-                embedding = rag_service.get_embedding(question)
+                embedding = self.embedding_function(question)
                 self.example_embeddings[route].append(embedding)
 
     def average_similarity(self, query_embedding, embeddings):
@@ -38,8 +40,7 @@ class QueryRouter:
             similarities.append(similarity)
         return sum(similarities) / len(similarities)
 
-    def route(self, question: str) -> dict:
-        query_embedding = rag_service.get_embedding(question)
+    def route(self, query_embedding: list) -> dict:
         scores = {}
         for route, embeddings in self.example_embeddings.items():
             avg_similarity = self.average_similarity(query_embedding, embeddings)
@@ -49,5 +50,3 @@ class QueryRouter:
             "route": best_route,
             "scores": scores
         }
-
-query_router = QueryRouter()

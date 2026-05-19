@@ -10,5 +10,12 @@ class DBService:
         cursor.close()
         release_connection(conn)
         return rows
-
+    def get_all_flights(self):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("select * from flights")
+        rows = cursor.fetchall()
+        cursor.close()
+        release_connection(conn)
+        return rows
 db_service = DBService()
