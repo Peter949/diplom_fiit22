@@ -11,6 +11,4 @@ class DBService:
         release_connection(conn)
         return rows
 
-
-
 db_service = DBService()

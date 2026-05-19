@@ -1,4 +1,5 @@
 from sklearn.metrics.pairwise import cosine_similarity
+from query_router import query_router
 import requests
 import json
 import config
@@ -17,8 +18,6 @@ class RAGService:
         for row in rows:
             faq_id, category, faq_question, faq_answer, faq_embedding, dt = row
             faq_embedding = self.get_embedding(faq_question)
-            # if isinstance(faq_embedding, str):
-            #     faq_embedding = json.loads(faq_embedding)
             similarity = cosine_similarity([question_embedding],[faq_embedding])[0][0]
 
             similarities.append({
